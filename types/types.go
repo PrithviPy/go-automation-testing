@@ -29,3 +29,9 @@ type JwtClaims struct {
 func (*JwtClaims) Valid() error {
 	return nil
 }
+
+type GBWorkspace struct {
+	GOBID       string
+	Name        string
+	Description string
+}

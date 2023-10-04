@@ -10,7 +10,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func AllHandlers() *httprouter.Router {
+func AllUserGroupHandlers() *httprouter.Router {
 	router := httprouter.New()
 
 	router.POST("/", WelcomeUser)
@@ -30,7 +30,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
 	var user *types.GBUser = new(types.GBUser)
 	utils.DecodeRequestBody(r, &user)
-	_, err := storage.FindOne("user", &user)
+	var filter *types.GBUser = new(types.GBUser)
+	filter.Name = user.Email
+	filter.Password = user.Password
+	_, err := storage.FindOne("user", filter, &user)
 	var commonRes *types.GBCommongResponse = new(types.GBCommongResponse)
 	if err != nil {
 		commonRes.Message = "User Not Found !"
@@ -57,8 +60,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 func GetUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
 	var user *types.GBUser = new(types.GBUser)
+	var filter *types.GBUser = new(types.GBUser)
 	utils.DecodeRequestBody(r, &user)
-	storage.FindOne("user", &user)
+	filter.Name = user.Email
+	storage.FindOne("user", filter, &user)
 	resonse, _ := json.Marshal(*user)
 	w.Write(resonse)
 }

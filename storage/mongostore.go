@@ -56,11 +56,26 @@ func InsertOne(collectionName string, doc interface{}) (interface{}, error) {
 	return result, err
 }
 
-func FindOne(collectionName string, doc interface{}) (interface{}, error) {
+func FindOne(collectionName string, filterDoc interface{}, bindingInterface interface{}) (interface{}, error) {
+	collection := *MonGoClient.Database(DBName).Collection(collectionName)
+	filter, _ := utils.CreateBSONWithNonEmptyFields(filterDoc)
+	fmt.Printf("Trying to find %v", filter)
+	err := collection.FindOne(*DbContext, filter).Decode(bindingInterface)
+	return bindingInterface, err
+}
+
+func UpdateOne(collectionName string, doc interface{}) (interface{}, error) {
 	collection := *MonGoClient.Database(DBName).Collection(collectionName)
 	filter, _ := utils.CreateBSONWithNonEmptyFields(doc)
 	fmt.Printf("Trying to find %v", filter)
-	err := collection.FindOne(*DbContext, filter).Decode(doc)
+	_, err := collection.UpdateOne(*DbContext, filter, doc)
 	return doc, err
+}
 
+func DeleteOne(collectionName string, doc interface{}) (interface{}, error) {
+	collection := *MonGoClient.Database(DBName).Collection(collectionName)
+	filter, _ := utils.CreateBSONWithNonEmptyFields(doc)
+	fmt.Printf("Trying to find %v", filter)
+	_, err := collection.DeleteOne(*DbContext, filter)
+	return doc, err
 }

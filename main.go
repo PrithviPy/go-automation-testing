@@ -21,6 +21,6 @@ func main() {
 	}
 	storage.Ping()
 	fmt.Print("Application Started complete log available in application.log file !")
-	router := api.AllHandlers()
+	router := api.AllUserGroupHandlers()
 	log.Fatal(http.ListenAndServe(port, router))
 }
