@@ -105,3 +105,16 @@
 2023/10/04 00:10:13 ----Trying to conencto to DB----
 2023/10/04 00:10:13 mongodb://localhost:27017
 2023/10/04 00:10:13 ----connected successfully----
+2023/10/05 06:17:42 ----Trying to conencto to DB----
+2023/10/05 06:17:42 mongodb://localhost:27017
+2023/10/05 06:17:42 ----connected successfully----
+2023/10/05 06:18:17 ----Trying to conencto to DB----
+2023/10/05 06:18:17 mongodb://localhost:27017
+2023/10/05 06:18:17 ----connected successfully----
+2023/10/05 06:25:11 ----Trying to conencto to DB----
+2023/10/05 06:25:11 mongodb://localhost:27017
+2023/10/05 06:25:11 ----connected successfully----
+2023/10/05 06:27:06 ----Trying to conencto to DB----
+2023/10/05 06:27:06 mongodb://localhost:27017
+2023/10/05 06:27:06 ----connected successfully----
+2023/10/05 06:28:57 listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.

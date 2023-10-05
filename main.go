@@ -8,6 +8,7 @@ import (
 	"github.com/PrithviPy/go-automation-testing/api"
 	"github.com/PrithviPy/go-automation-testing/storage"
 	"github.com/PrithviPy/go-automation-testing/utils"
+	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
@@ -21,6 +22,8 @@ func main() {
 	}
 	storage.Ping()
 	fmt.Print("Application Started complete log available in application.log file !")
-	router := api.AllUserGroupHandlers()
+	router := httprouter.New()
+	api.AllUserGroupHandlers(router)
+	api.AllWorkspcaeHandlers(router)
 	log.Fatal(http.ListenAndServe(port, router))
 }

@@ -64,12 +64,21 @@ func FindOne(collectionName string, filterDoc interface{}, bindingInterface inte
 	return bindingInterface, err
 }
 
-func UpdateOne(collectionName string, doc interface{}) (interface{}, error) {
+func FindAll(collectionName string, filterDoc interface{}, bindingInterface interface{}) (interface{}, error) {
 	collection := *MonGoClient.Database(DBName).Collection(collectionName)
-	filter, _ := utils.CreateBSONWithNonEmptyFields(doc)
+	filter, _ := utils.CreateBSONWithNonEmptyFields(filterDoc)
 	fmt.Printf("Trying to find %v", filter)
-	_, err := collection.UpdateOne(*DbContext, filter, doc)
-	return doc, err
+	cursour, err := collection.Find(*DbContext, filter)
+	cursour.All(*DbContext, bindingInterface)
+	return bindingInterface, err
+}
+
+func UpdateOne(collectionName string, filterDoc interface{}, doc interface{}) interface{} {
+	collection := *MonGoClient.Database(DBName).Collection(collectionName)
+	filter, _ := utils.CreateBSONWithNonEmptyFields(filterDoc)
+	fmt.Printf("Trying to find %v", filter)
+	result := collection.FindOneAndUpdate(*DbContext, filterDoc, doc)
+	return result
 }
 
 func DeleteOne(collectionName string, doc interface{}) (interface{}, error) {

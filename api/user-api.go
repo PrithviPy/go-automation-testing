@@ -10,13 +10,11 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func AllUserGroupHandlers() *httprouter.Router {
-	router := httprouter.New()
-
+func AllUserGroupHandlers(router *httprouter.Router) *httprouter.Router {
 	router.POST("/", WelcomeUser)
-	router.POST("/login", LoginUser)
-	router.POST("/create-user", CreateUser)
-	router.GET("/get-user", utils.JWTMiddleware(GetUser))
+	router.POST("/user/login", LoginUser)
+	router.POST("/user/create-user", CreateUser)
+	router.GET("/user/get-user", utils.JWTMiddleware(GetUser))
 	return router
 }
 
