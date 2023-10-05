@@ -64,6 +64,7 @@ func JWTMiddleware(next httprouter.Handle) httprouter.Handle {
 		}
 		jwtCLaim, _ := parseToken(tokenString)
 		w.Header().Add("userid", jwtCLaim.Sub)
+		EnableCors(&w)
 		next(w, r, params)
 	}
 }
@@ -134,4 +135,8 @@ func CreateBSONWithNonEmptyFields(data interface{}) (bson.M, error) {
 		}
 	}
 	return bsonMap, nil
+}
+
+func EnableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
