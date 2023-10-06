@@ -4,7 +4,7 @@
 #### Main Folder Strecture
 
 - Avoid Circular Dependencies
-- Avoid sub-folders
+- Avoid sub-folders 
 
 ```
 
