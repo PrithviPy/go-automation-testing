@@ -25,5 +25,6 @@ func main() {
 	router := httprouter.New()
 	api.AllUserGroupHandlers(router)
 	api.AllWorkspcaeHandlers(router)
+	api.AllTestSuiteHandler(router)
 	log.Fatal(http.ListenAndServe(port, router))
 }

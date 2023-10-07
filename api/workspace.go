@@ -11,14 +11,15 @@ import (
 )
 
 func AllWorkspcaeHandlers(router *httprouter.Router) *httprouter.Router {
-	router.POST("/workspace/create", utils.JWTMiddleware(CreateWorkspace))
-	router.POST("/workspace/get-all-for-user", utils.JWTMiddleware(GetAllWorkspaceForUser))
-	router.POST("/workspace/delete", utils.JWTMiddleware(DeleteWorkspace))
-	router.GET("/workspace/update", utils.JWTMiddleware(UpdateWorkspace))
+	router.POST("/workspace/create", utils.JWTMiddleware(createWorkspace))
+	router.POST("/workspace/get-all", utils.JWTMiddleware(getAllWorkspaceForUser))
+	router.POST("/workspace/get-one", utils.JWTMiddleware(getOneTestSuite))
+	router.POST("/workspace/delete-one", utils.JWTMiddleware(deleteWorkspace))
+	router.GET("/workspace/update-one", utils.JWTMiddleware(updateWorkspace))
 	return router
 }
 
-func CreateWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func createWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
 	var workspace *types.GBWorkspace = new(types.GBWorkspace)
 	utils.DecodeRequestBody(r, &workspace)
@@ -28,7 +29,7 @@ func CreateWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	w.Write(resonse)
 }
 
-func GetAllWorkspaceForUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func getAllWorkspaceForUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
 	var user *types.GBUser = new(types.GBUser)
 	workspace := new([]types.GBWorkspace)
@@ -39,7 +40,18 @@ func GetAllWorkspaceForUser(w http.ResponseWriter, r *http.Request, _ httprouter
 	w.Write(resonse)
 }
 
-func DeleteWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func getOneWorkspaceForUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	w.Header().Add("Content-Type", "application/json")
+	var user *types.GBUser = new(types.GBUser)
+	workspace := new(types.GBWorkspace)
+	utils.DecodeRequestBody(r, &user)
+	user.GOBID = utils.GetUid()
+	storage.FindOne("workspace", user, workspace)
+	resonse, _ := json.Marshal(user)
+	w.Write(resonse)
+}
+
+func deleteWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
 	var filter *types.GBWorkspace = new(types.GBWorkspace)
 	utils.DecodeRequestBody(r, &filter)
@@ -49,9 +61,8 @@ func DeleteWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params
 	w.Write(resonse)
 }
 
-func UpdateWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func updateWorkspace(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Add("Content-Type", "application/json")
-
 	var updateDoc *types.GBWorkspace = new(types.GBWorkspace)
 	var filter *types.GBWorkspace = new(types.GBWorkspace)
 	utils.DecodeRequestBody(r, &updateDoc)

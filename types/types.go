@@ -31,7 +31,55 @@ func (*JwtClaims) Valid() error {
 }
 
 type GBWorkspace struct {
-	GOBID       string
-	Name        string
-	Description string
+	GOBID       string `json:"id"`
+	Name        string `json:"workspace_name"`
+	Description string `json:"description"`
+	User        string `json:"user"`
+}
+
+type GBTestSuite struct {
+	GOBID       string `json:"id"`
+	Name        string `json:"testsuite_name"`
+	Description string `json:"description"`
+	User        string `json:"user"`
+	Workspace   string `json:"workspace"`
+	Application string `json:"application"`
+	LoaderCss   string `json:"locaderCss"`
+}
+
+type GBTestCase struct {
+	GOBID           string             `json:"id"`
+	TestSuite       string             `json:"test_suite"`
+	TestCaseName    string             `json:"testcase_name"`
+	TestCaseType    string             `json:"test_case_type"`
+	TestCaseDetails TestCaseDetailsVal `json:"test_case_details"`
+}
+
+type TestCaseDetailsVal struct {
+	SelectorGroup SelectorGroupVal `json:"selector_group"`
+	Action        ActionVal        `json:"action"`
+}
+
+type SelectorGroupVal struct {
+	CssSelector   SelectorVal `json:"css_selector"`
+	IdSelector    SelectorVal `json:"id_selector"`
+	XpathSelector SelectorVal `json:"xpath_selector"`
+}
+
+type SelectorVal struct {
+	IsSelected string `json:"is_selected"`
+	Selector   string `json:"selector"`
+}
+
+type ActionVal struct {
+	EnterValue string         `json:"eneter_value"`
+	Read       string         `json:"read"`
+	Assertion  []AssertionVal `json:"assertion"`
+}
+
+type AssertionVal struct {
+	AssertionType   string `json:"assertion_type"`
+	FieldToValidate string `json:"field_to_validate"`
+	TrueValue       string `json:"true_value"`
+	FindBu          string `json:"find_by"`
 }
