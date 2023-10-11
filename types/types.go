@@ -38,13 +38,21 @@ type GBWorkspace struct {
 }
 
 type GBTestSuite struct {
-	GOBID       string `json:"id"`
-	Name        string `json:"testsuite_name"`
-	Description string `json:"description"`
-	User        string `json:"user"`
-	Workspace   string `json:"workspace"`
-	Application string `json:"application"`
-	LoaderCss   string `json:"locaderCss"`
+	GOBID             string             `json:"id"`
+	Name              string             `json:"testsuite_name"`
+	Description       string             `json:"description"`
+	User              string             `json:"user"`
+	Workspace         string             `json:"workspace"`
+	Application       string             `json:"application"`
+	LoaderCss         string             `json:"locaderCss"`
+	TestCaseModuleGrp []GBTestCaseModule `json:"testCaseModuleGrp"`
+}
+
+type GBTestCaseModule struct {
+	GOBID       string       `json:"id"`
+	Name        string       `json:"testcasemodule_name"`
+	Description string       `json:"description"`
+	TestCaseGrp []GBTestCase `json:"testCaseGrp"`
 }
 
 type GBTestCase struct {

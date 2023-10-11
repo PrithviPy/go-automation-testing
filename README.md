@@ -16,3 +16,7 @@
 application
 main.go
 ```
+## Start Mongo DB
+```
+sudo systemctl start mongod
+```

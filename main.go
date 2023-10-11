@@ -26,5 +26,6 @@ func main() {
 	api.AllUserGroupHandlers(router)
 	api.AllWorkspcaeHandlers(router)
 	api.AllTestSuiteHandler(router)
+	api.AllTestCaseHandler(router)
 	log.Fatal(http.ListenAndServe(port, router))
 }
