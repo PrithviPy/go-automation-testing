@@ -46,25 +46,27 @@ var secretKey = []byte("")
 func JWTMiddleware(next httprouter.Handle) httprouter.Handle {
 	secretKey = []byte(os.Getenv("jwt_key"))
 	return func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		tokenString := strings.Split(r.Header.Get("Authorization"), "Bearer ")[1]
-		if tokenString == "" {
-			http.Error(w, "Authorization header missing", http.StatusUnauthorized)
-			return
+		if os.Getenv("env") != "DEV" {
+			tokenString := strings.Split(r.Header.Get("Authorization"), "Bearer ")[1]
+			if tokenString == "" {
+				http.Error(w, "Authorization header missing", http.StatusUnauthorized)
+				return
+			}
+			token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+				return secretKey, nil
+			})
+			if err != nil {
+				http.Error(w, "Invalid token", http.StatusUnauthorized)
+				return
+			}
+			if !token.Valid {
+				http.Error(w, "Token is not valid", http.StatusUnauthorized)
+				return
+			}
+			jwtCLaim, _ := parseToken(tokenString)
+			w.Header().Add("userid", jwtCLaim.Sub)
+			EnableCors(&w)
 		}
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			return secretKey, nil
-		})
-		if err != nil {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
-			return
-		}
-		if !token.Valid {
-			http.Error(w, "Token is not valid", http.StatusUnauthorized)
-			return
-		}
-		jwtCLaim, _ := parseToken(tokenString)
-		w.Header().Add("userid", jwtCLaim.Sub)
-		EnableCors(&w)
 		next(w, r, params)
 	}
 }
